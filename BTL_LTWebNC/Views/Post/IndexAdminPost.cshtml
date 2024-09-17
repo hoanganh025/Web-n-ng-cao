@@ -1,0 +1,35 @@
+﻿@model IEnumerable<BTL_LTWebNC.Models.EF.Post>
+@{
+}
+
+<h2 class="text-center">Admin quản lý bài đăng</h2>
+<a class="btn btn-outline-primary mb-5" asp-action="CreatePost">Thêm bài viết</a>
+
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-8 mb-4">
+                <div class="post-details rounded border p-3 shadow-sm">
+                    <div class="row">
+                        @if (!string.IsNullOrEmpty(item.Urlimg))
+                        {
+                            <div class="col-md-5 text-center">
+                                <img src="@item.Urlimg" alt="Post Image" class="img-fluid mb-3 rounded">
+                            </div>
+                        }
+                        <div class="col-md-7">
+                            <p class="" style="font-size: 2rem; font-weight: 500">@item.Title</p>
+                            <p class="text-muted">
+                                Đăng bởi @item.User.FullName lúc @item.CreateOn?.ToString("MM/dd/yyyy HH:mm:ss tt")
+                            </p>
+                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.PostID">Chi tiết</a>
+                            <a asp-action="EditPost" asp-route-id="@item.PostID" class="btn btn-primary">Chỉnh sửa</a>
+                            <a asp-action="DeletePost" asp-route-id="@item.PostID" class="btn btn-danger">Xóa</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

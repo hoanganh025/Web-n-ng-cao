@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    var userName = ViewContext.HttpContext.Session.GetString("UserName");
+    var role = ViewContext.HttpContext.Session.GetInt32("Role");
+    var phoneNumber = ViewContext.HttpContext.Session.GetString("Email");
+    var position = ViewContext.HttpContext.Session.GetString("FullName");
+}
+
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WNC.G05</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                        <a class="nav-link text-dark" asp-controller="Post" asp-action="IndexPost">Home</a>
+                    </li>
+                    <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="ActionThi">Action thi</a>
+                    </li>
+
+                    @if(role == 1)
+                    {
+                        <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="IndexAdmin">Quản lý tài khoản</a>
+                        </li>
+                        <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                            <a class="nav-link text-dark" asp-controller="Post" asp-action="IndexAdminPost">Quản lý bài đăng</a>
+                        </li>
+                        <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="ActionThi">Action thi</a>
+                        </li>
+                    }
+
+                    @if (role == 2)
+                    {
+                        <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                            <a class="nav-link text-dark" asp-controller="Post" asp-action="CreatePost">Create Post</a>
+                        </li>
+                        <li class="navbar-nav mb-2 mb-lg-0 small fw-bolder">
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="ActionThi">Action thi</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="me-5">
+                <ul class="navbar-nav  mb-2 mb-lg-0 small fw-bolder">
+                    @if (userName == null)
+                    {
+                        <li class="nav-item"><a class="nav-link " asp-controller="Account" asp-action="Register">Đăng ký</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-controller="Account" asp-action="Login">Đăng nhập</a></li>
+                    }
+
+                    @if (userName != null)
+                    {
+                        <li class="nav-item"><a class="nav-link " asp-controller="Account" asp-action="Register">Xin chào @userName</a></li>
+                        <li class="nav-item"><a class="nav-link " asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                    }
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

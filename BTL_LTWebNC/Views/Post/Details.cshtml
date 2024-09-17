@@ -1,0 +1,108 @@
+﻿@model BTL_LTWebNC.Models.EF.Post
+@{
+    var userId = ViewContext.HttpContext.Session.GetInt32("UserId");
+    var userRole = ViewContext.HttpContext.Session.GetInt32("Role");
+}
+
+<h3 class="mb-4 text-center">Chi tiết bài đăng</h3>
+
+@* Anh don *@
+@* <img src="@Model.Urlimg" alt="Uploaded Image" class="img-fluid rounded" /> *@
+<div class="container">
+    <div class="row justify-content-center">
+        @* list anh *@
+        <div id="carouselExampleIndicators" class="carousel slide mb-5" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                @if (Model.ListPostGallery != null)
+                    @for (int i = 0; i < Model.ListPostGallery.Count(); i++)
+                    {
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                    }
+            </div>
+            <div class="carousel-inner">
+                @if (Model.ListPostGallery != null)
+                    @for (int i = 0; i < Model.ListPostGallery.Count(); i++)
+                    {
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img class="d-block w-100 img-fluid rounded" src="@Model.ListPostGallery[i].URLImgGallery" alt="@Model.ListPostGallery[i].FileNameImg">
+                        </div>
+                    }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <div>
+            <p>Đăng bởi @Model.User.FullName lúc @Model.CreateOn?.ToString("MM/dd/yyyy HH:mm:ss tt")</p>
+            <h3>@Model.Title</h3>
+            <p>@Model.ContentPost</p>
+
+            <button id="like-button" data-post-id="@Model.PostID" class="btn @(Model.UserHasLiked ? "btn-primary" : "btn-secondary")">
+                Thích (<span id="like-count">@Model.LikeCount</span>)
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+
+<h4 class="text-center mt-5">Tất cả bình luận:</h4>
+@foreach (var comment in Model.ListComment)
+{
+    <h4>@comment.User.FullName</h4>
+    <div>@comment.CreateOn.ToString("MM/dd/yyyy HH:mm:ss tt")</div>
+    <p>@comment.ContentCmt </p>
+    <hr />
+    
+}
+
+<form asp-action="AddComment">
+    @if (userId == null)
+    {
+        <a class="btn btn-info" asp-controller="Account" asp-action="Login" >Đăng nhập để bình luận</a>
+    }
+    else
+    {
+        <div class="form-group">
+            <textarea name="ContentCmt" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="UserID" class="form-control" value="@userId" />
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="PostID" class="form-control" value="@Model.PostID" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-info mt-3" value="Gửi bình luận" />
+        </div>
+    }
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#like-button').click(function () {
+                var postId = $(this).data('post-id');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ToggleLike", "Post")',
+                    data: { postId: postId },
+                    success: function (response) {
+                        $('#like-count').text(response.LikeCount);
+                        $('#like-button').toggleClass('btn-primary btn-secondary');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi khi toggle like: ", error);
+                    }
+                });
+            });
+        });
+    </script>
+
+}

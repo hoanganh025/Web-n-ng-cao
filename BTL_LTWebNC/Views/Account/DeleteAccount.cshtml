@@ -1,0 +1,30 @@
+﻿@model BTL_LTWebNC.Models.EF.User
+@{
+}
+
+<h2 class="text-center mb-4">Xóa tài khoản</h2>
+
+<div>
+    <h4 class="text-center mb-4">User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            <p>Tên tài khoản</p>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            <p>Mật khẩu</p>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserPassword)
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteAccount">
+        <input type="hidden" asp-for="UserID" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="IndexAdmin" class="btn btn-secondary">Trở về danh sách</a>
+    </form>
+</div>

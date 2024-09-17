@@ -1,0 +1,31 @@
+﻿@model BTL_LTWebNC.Models.EF.Post
+@{
+}
+
+<h2 class="text-center">Xóa bài đăng</h2>
+
+<div>
+    <h4>Bài đăng</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            <p>Tiêu đề</p>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            <p>Nội dung</p>
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ContentPost)
+        </dd>
+    </dl>
+
+    <form asp-action="DeletePost">
+        <input type="hidden" asp-for="PostID" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="IndexAdmin" class="btn btn-secondary">Trở lại danh sách</a>
+    </form>
+</div>
+

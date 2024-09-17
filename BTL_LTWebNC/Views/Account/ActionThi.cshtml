@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BTL_LTWebNC.Models.EF.User>
+@{
+}
+
+<h2 class="text-center">Admin quản lý tài khoản</h2>
+<a class="btn btn-outline-primary mb-5" asp-controller="Account" asp-action="AddAccount">Thêm tài khoản</a>
+
+<h2>Danh sách tài khoản</h2>
+
+<div class="container">
+    <div class="row">
+        @foreach (var user in Model)
+        {
+            <div class="col-lg-4 col-sm-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p>Id: @user.UserID</p>
+                        <p>Tên tài khoản: @user.UserName</p>
+                        <p>Mật khẩu: @user.Email</p>
+                        <p>Họ tên: @user.FullName</p>
+                        <p>Quyền: @user.Role.RoleName</p>
+                        <p>Verify Key: @user.VerifyKey</p>
+                        <a asp-action="EditAccount" asp-route-id="@user.UserID" class="btn btn-primary">Edit</a>
+                        <button id="delete-button" data-post-id="@user.UserID" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#delete-button').click(function () {
+            var id = $(this).data('data-post-id');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DeleteAccount", "Account")',
+                data: { postId: id },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi ", error);
+                }
+            });
+        });
+    });
+</script>
+
+
+

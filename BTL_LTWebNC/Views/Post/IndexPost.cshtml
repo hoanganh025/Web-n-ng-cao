@@ -1,0 +1,42 @@
+﻿@model IEnumerable<BTL_LTWebNC.Models.EF.Post>
+@{
+}
+
+<form asp-action="SearchPost" method="post">
+    <div class="form-group col-md-8 mb-4 mx-auto d-flex justify-content-center align-items-center">
+        <input type="text" name="searchString" placeholder="Tìm theo tiêu đề..." class="form-control d-inline-block mr-2" style="width: 50%;" />
+        <button type="submit" class="btn btn-primary d-inline-block">Tìm kiếm</button>
+    </div>
+</form>
+
+<h2 class="text-center mb-4">HOME</h2>
+
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-8 mb-4">
+                <div class="post-details rounded border p-3 shadow-sm">
+                    <div class="row">
+                        @if (!string.IsNullOrEmpty(item.Urlimg))
+                        {
+                            <div class="col-md-5 text-center">
+                                <img src="@item.Urlimg" alt="Post Image" class="img-fluid mb-3 rounded">
+                            </div>
+                        }
+                        <div class="col-md-7">
+                            <p class="" style="font-size: 2rem; font-weight: 500">@item.Title</p>
+                            <p class="text-muted">
+                                Đăng bởi @item.User.FullName lúc @item.CreateOn?.ToString("MM/dd/yyyy HH:mm:ss tt")
+                            </p>
+                            <p class="text-muted">
+                                Số lượt trả lời: @(item.ListComment?.Count() ?? 0) - Số lượt thích: @(item.ListLike?.Count() ?? 0)
+                            </p>
+                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.PostID">Chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
